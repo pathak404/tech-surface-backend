@@ -6,11 +6,11 @@ import dotEnv from "dotenv"
 
 import router from "./src/routes"
 import { sendResponseMiddleware } from "./src/utils"
-import { studentMiddleware } from "./src/middleware/Student"
-import { courseMiddleware } from "./src/middleware/Course"
-import { batchMiddleware } from "./src/middleware/Batch"
-import { examMiddleware } from "./src/middleware/Exam"
-import { questionMiddleware } from "./src/middleware/Question"
+import { studentMiddleware } from "./src/middlewares/Student"
+import { courseMiddleware } from "./src/middlewares/Course"
+import { batchMiddleware } from "./src/middlewares/Batch"
+import { examMiddleware } from "./src/middlewares/Exam"
+import { questionMiddleware } from "./src/middlewares/Question"
 
 
 dotEnv.config();

@@ -7,7 +7,7 @@ const studentSchema: Schema<StudentDocument> = new Schema({
     _id: mongoose.Schema.Types.ObjectId,
     studentId: {
         type: mongoose.Schema.Types.String,
-        required: true,
+        // required: true, // not required becouse of pre
         unique: true,
     },
     phone: {
@@ -56,7 +56,7 @@ studentSchema.methods.setStudentId = function(this: StudentDocument) : void {
     }
 }
 
-// automatically set when saving
+// automatically set studentId when saving
 studentSchema.pre<StudentDocument>("save", function(next){
     this.setStudentId()
     next()

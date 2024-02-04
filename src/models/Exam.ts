@@ -6,7 +6,6 @@ const examSchema: Schema<ExamDocument> = new Schema({
     _id: mongoose.Schema.Types.ObjectId,
     examId: {
         type: mongoose.Schema.Types.String,
-        required: true,
         unique: true,
     },
     name: {

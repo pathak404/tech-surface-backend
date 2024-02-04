@@ -7,7 +7,6 @@ const batchSchema: Schema<BatchDocument> = new Schema({
     _id: mongoose.Schema.Types.ObjectId,
     batchId: {
         type: mongoose.Schema.Types.String,
-        required: true,
         unique: true,
     },
     courseId: {
