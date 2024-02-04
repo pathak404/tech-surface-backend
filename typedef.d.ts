@@ -12,6 +12,10 @@ declare global{
         interface Response{
             sendResponse: (data: Record<string, any>, statusCode: number = 200) => void
         }
+        interface Request{
+            isAdmin: boolean,
+            userId: string,
+        }
     }
 }
 

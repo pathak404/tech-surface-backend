@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express"
 import { DataType, RequestValidation } from "./types"
 import { Model } from "mongoose"
+import JWT, { JwtPayload } from "jsonwebtoken"
+
 
 export const generateRandomString = (len: number):string => {
     const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -11,8 +13,6 @@ export const generateRandomString = (len: number):string => {
     }
     return res
 }
-
-
 
 
 export const verifyRequestData = async <T extends RequestValidation, M extends Model<any>>
@@ -85,5 +85,33 @@ export const sendResponseMiddleware = (req: Request, res: Response, next: NextFu
         })
     }
     next()
+}
+
+
+export const generateJWT = (payload: JwtPayload, expiresIn: 172800) => {
+    return JWT.sign(payload, process.env.SECRET_KEYPHRASE, {
+        expiresIn: expiresIn * 1000 // in seconds
+    })
+}
+
+const verifyJWT = (token: string) => {
+    return JWT.verify(token, process.env.SECRET_KEYPHRASE)
+}
+
+export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+    const authorization = req.get("Authorization") // Bearer type
+    const token = authorization?.split(" ")[1] ?? undefined
+    if(token){
+        const payload = verifyJWT(token)
+        if(payload){
+            req.isAdmin = (payload as JwtPayload)?.isAdmin
+            req.userId = (payload as JwtPayload)?.userId
+            next()
+        }else{
+            res.sendResponse({message: "Invalid Authorization Value"}, 403)
+        }
+    }else{
+        res.sendResponse({message: "Authorization header not found"}, 403)
+    }
 }
 

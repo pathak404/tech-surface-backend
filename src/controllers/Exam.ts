@@ -1,0 +1,82 @@
+import { Request, Response } from "express";
+import Exam from "../models/Exam";
+import mongoose from "mongoose";
+
+
+export const addExam = async (req: Request, res: Response) => {
+    try{
+        const {courseId, name, examId, examDate} = req.body
+        const exam = new Exam({
+            _id: new mongoose.Types.ObjectId(), 
+            name, 
+            courseId,
+            examId,
+            examDate,
+        })
+
+        const savedExam = await exam.save()
+        res.sendResponse({
+            message: "Exam data added successfully",
+            exam: savedExam
+        })
+
+    }catch(err){
+        console.log(err)
+        res.sendResponse({
+            message: "Error occurs while adding a new exam"
+        }, 500)
+    }
+}
+
+export const getExam = async (req: Request, res: Response) => {
+    try{
+        const examId = req.params.examId
+        const savedExam = await Exam.findOne({examId})
+        if(savedExam){
+            res.sendResponse({
+                message: "Exam data fetched successfully",
+                exam: savedExam
+            })
+        }else {
+            res.sendResponse({
+                message: "No exam found",
+            }, 404)
+        }
+
+    }catch(err){
+        console.log(err)
+        res.sendResponse({
+            message: "Error occurs while fetching exam data"
+        }, 500)
+    }
+}
+
+
+export const updateExam = async (req: Request, res: Response) => {
+    try{
+        const {courseId, name, examId, examDate} = req.body
+        const exam = {
+            name, 
+            courseId,
+            examId,
+            examDate,
+        }
+
+        const updatedExam = await Exam.findOneAndUpdate({examId: req.params.examId}, exam, {
+            new: true
+        })
+        
+        res.sendResponse({
+            message: "Exam data updated successfully",
+            exam: updatedExam
+        })
+
+    }catch(err){
+        console.log(err)
+        res.sendResponse({
+            message: "Error occurs while updaing exam data"
+        }, 500)
+    }
+}
+
+

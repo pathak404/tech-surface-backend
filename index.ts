@@ -5,7 +5,7 @@ import bodyParser from "body-parser"
 import dotEnv from "dotenv"
 
 import router from "./src/routes"
-import { sendResponseMiddleware } from "./src/utils"
+import { authMiddleware, sendResponseMiddleware } from "./src/utils"
 import { studentMiddleware } from "./src/middlewares/Student"
 import { courseMiddleware } from "./src/middlewares/Course"
 import { batchMiddleware } from "./src/middlewares/Batch"
@@ -33,11 +33,12 @@ mongoose.connection.on("error", (err)=> {
 
 app.use(sendResponseMiddleware)
 
-app.use("/student", studentMiddleware)
-app.use("/course", courseMiddleware)
-app.use("/batch", batchMiddleware)
-app.use("/exam", examMiddleware)
-app.use("/question", questionMiddleware)
+app.use("/student", [authMiddleware, studentMiddleware])
+app.use("/course", [authMiddleware, courseMiddleware])
+app.use("/batch", [authMiddleware, batchMiddleware])
+app.use("/exam", [authMiddleware, examMiddleware])
+app.use("/question", [authMiddleware, questionMiddleware])
+
 
 app.use(router)
 
