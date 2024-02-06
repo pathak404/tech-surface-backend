@@ -5,12 +5,12 @@ import mongoose from "mongoose";
 
 export const addExam = async (req: Request, res: Response) => {
     try{
-        const {courseId, name, examId, examDate} = req.body
+        const {courseId, batchId, name, examDate} = req.body
         const exam = new Exam({
             _id: new mongoose.Types.ObjectId(), 
             name, 
             courseId,
-            examId,
+            batchId,
             examDate,
         })
 
@@ -54,11 +54,11 @@ export const getExam = async (req: Request, res: Response) => {
 
 export const updateExam = async (req: Request, res: Response) => {
     try{
-        const {courseId, name, examId, examDate} = req.body
+        const {courseId, batchId, name, examDate} = req.body
         const exam = {
             name, 
             courseId,
-            examId,
+            batchId,
             examDate,
         }
 

@@ -5,12 +5,7 @@ import bodyParser from "body-parser"
 import dotEnv from "dotenv"
 
 import router from "./src/routes"
-import { authMiddleware, sendResponseMiddleware } from "./src/utils"
-import { studentMiddleware } from "./src/middlewares/Student"
-import { courseMiddleware } from "./src/middlewares/Course"
-import { batchMiddleware } from "./src/middlewares/Batch"
-import { examMiddleware } from "./src/middlewares/Exam"
-import { questionMiddleware } from "./src/middlewares/Question"
+import { sendResponseMiddleware } from "./src/utils"
 
 
 dotEnv.config();
@@ -32,14 +27,6 @@ mongoose.connection.on("error", (err)=> {
 
 
 app.use(sendResponseMiddleware)
-
-app.use("/student", [authMiddleware, studentMiddleware])
-app.use("/course", [authMiddleware, courseMiddleware])
-app.use("/batch", [authMiddleware, batchMiddleware])
-app.use("/exam", [authMiddleware, examMiddleware])
-app.use("/question", [authMiddleware, questionMiddleware])
-
-
 app.use(router)
 
 
@@ -47,7 +34,7 @@ app.use(router)
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.log(err.stack)
     res.sendResponse({
-        message: "Internal server error: +"+ err
+        message: "Internal server error: "+ err
     }, 500)
 })
 

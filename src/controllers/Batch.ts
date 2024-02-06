@@ -5,7 +5,8 @@ import mongoose from "mongoose";
 
 export const addBatch = async (req: Request, res: Response) => {
     try{
-        const {courseId, name, description, startDate, endDate} = req.body
+        const courseId = req.params.courseId
+        const {name, description, startDate, endDate} = req.body
         const batch = new Batch({
             _id: new mongoose.Types.ObjectId(), 
             name, 
@@ -55,7 +56,8 @@ export const getBatch = async (req: Request, res: Response) => {
 
 export const updateBatch = async (req: Request, res: Response) => {
     try{
-        const {courseId, name, description, startDate, endDate} = req.body
+        const courseId = req.params.courseId
+        const {name, description, startDate, endDate} = req.body
         const batch = {
             name, 
             description,

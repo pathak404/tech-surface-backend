@@ -5,7 +5,8 @@ import mongoose from "mongoose";
 
 export const addQuestion = async (req: Request, res: Response) => {
     try{
-        const {examId, question, options, answer} = req.body
+        const examId = req.params.examId
+        const {question, options, answer} = req.body
         const addQues = new Question({
             _id: new mongoose.Types.ObjectId(), 
             examId,
@@ -52,9 +53,34 @@ export const getQuestion = async (req: Request, res: Response) => {
 }
 
 
+export const getQuestions = async (req: Request, res: Response) => {
+    try{
+        const examId = req.params.examId
+        const savedQuestion = await Question.find({examId}, "questionId question options")
+        if(savedQuestion){
+            res.sendResponse({
+                message: "Questions data fetched successfully",
+                question: savedQuestion
+            })
+        }else {
+            res.sendResponse({
+                message: "No question found",
+            }, 404)
+        }
+
+    }catch(err){
+        console.log(err)
+        res.sendResponse({
+            message: "Error occurs while fetching questions data"
+        }, 500)
+    }
+}
+
+
 export const updateQuestion = async (req: Request, res: Response) => {
     try{
-        const {examId, question, options, answer} = req.body
+        const examId = req.params.examId
+        const {question, options, answer} = req.body
         const updateQues = {
             examId,
             question, 

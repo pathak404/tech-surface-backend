@@ -50,10 +50,42 @@ export interface BatchDocument extends Document {
     setBatchId: () => void,
 }
 
+export interface AdminDocument extends Document {
+    adminId: string,
+    name: string,
+    email: string,
+    password: string,
+    createdAt: Date,
+    setAdminId: () => void,
+    setPassword: (password: string) => void,
+    verifyPassword: (password: string) => boolean,
+}
+
+export interface AdminDocument extends Document {
+    adminId: string,
+    name: string,
+    email: string,
+    password: string,
+    createdAt: Date,
+    setAdminId: () => void,
+    setPassword: (password: string) => void,
+    verifyPassword: (password: string) => boolean,
+}
+
+export interface ResultDocument extends Document {
+    resultId: string,
+    studentId: string,
+    examId: string,
+    answers: Record<string, any> // eg: { questionId: answer }
+    correctAnswers: number,
+    incorrectAnswers: number,
+    submittedAt: Date,
+    setResultId: () => void,
+}
 
 export type DataType = "string" | "number" | "boolean" | "array" | "object" | "date" | "any"
 
-export type DocumentType = StudentDocument | ExamDocument | CourseDocument | BatchDocument | QuestionDocument
+export type DocumentType = StudentDocument | ExamDocument | CourseDocument | BatchDocument | QuestionDocument | AdminDocument | ResultDocument
 
 export type RequestValidation = {
     [key: string] : {

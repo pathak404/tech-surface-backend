@@ -88,7 +88,7 @@ export const sendResponseMiddleware = (req: Request, res: Response, next: NextFu
 }
 
 
-export const generateJWT = (payload: JwtPayload, expiresIn: 172800) => {
+export const generateJWT = (payload: JwtPayload, expiresIn: number = 172800) => {
     return JWT.sign(payload, process.env.SECRET_KEYPHRASE, {
         expiresIn: expiresIn * 1000 // in seconds
     })
