@@ -23,6 +23,8 @@ To run this project, you will need to add the following environment variables to
 
 `PORT` - Port Number
 
+`SECRET_KEYPHRASE` - Used for hashing/encryption
+
 
 ## Other References
 
