@@ -52,6 +52,30 @@ export const getExam = async (req: Request, res: Response) => {
 }
 
 
+
+export const getExams = async (req: Request, res: Response) => {
+    try{
+        const savedExam = await Exam.find({}).sort({createdAt: -1})
+        if(savedExam){
+            res.sendResponse({
+                message: "Exams data fetched successfully",
+                exam: savedExam
+            })
+        }else {
+            res.sendResponse({
+                message: "No exam found",
+            }, 404)
+        }
+
+    }catch(err){
+        console.log(err)
+        res.sendResponse({
+            message: "Error occurs while fetching exams data"
+        }, 500)
+    }
+}
+
+
 export const updateExam = async (req: Request, res: Response) => {
     try{
         const {courseId, batchId, name, examDate} = req.body

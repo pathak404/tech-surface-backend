@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Student from "../models/Student";
 import mongoose from "mongoose";
-
+import { ParsedQs } from "../types";
 
 export const addStudent = async (req: Request, res: Response) => {
     try{
@@ -49,6 +49,29 @@ export const getStudent = async (req: Request, res: Response) => {
         console.log(err)
         res.sendResponse({
             message: "Error occurs while fetching student data"
+        }, 500)
+    }
+}
+
+
+export const getStudents = async (req: Request, res: Response) => {
+    try{
+        const savedStudent = await Student.find({}).sort({ createdAt: -1 })
+        if(savedStudent){
+            res.sendResponse({
+                message: "Students data fetched successfully",
+                student: savedStudent
+            })
+        }else {
+            res.sendResponse({
+                message: "No student found",
+            }, 404)
+        }
+
+    }catch(err){
+        console.log(err)
+        res.sendResponse({
+            message: "Error occurs while fetching students data"
         }, 500)
     }
 }

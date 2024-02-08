@@ -50,6 +50,30 @@ export const getCourse = async (req: Request, res: Response) => {
 }
 
 
+export const getCourses = async (req: Request, res: Response) => {
+    try{
+        const savedCourse = await Course.find({}).sort({createdAt: -1})
+        if(savedCourse){
+            res.sendResponse({
+                message: "Courses data fetched successfully",
+                course: savedCourse
+            })
+        }else {
+            res.sendResponse({
+                message: "No course found",
+            }, 404)
+        }
+
+    }catch(err){
+        console.log(err)
+        res.sendResponse({
+            message: "Error occurs while fetching courses data"
+        }, 500)
+    }
+}
+
+
+
 export const updateCourse = async (req: Request, res: Response) => {
     try{
         const {name, description} = req.body

@@ -53,6 +53,30 @@ export const getBatch = async (req: Request, res: Response) => {
     }
 }
 
+export const getBatches = async (req: Request, res: Response) => {
+    try{
+        const batchId = req.params.batchId
+        const courseId = req.params.courseId
+        const savedBatch = await Batch.find({batchId, courseId}).sort({ createdAt: -1 })
+        if(savedBatch){
+            res.sendResponse({
+                message: "Batches data fetched successfully",
+                batch: savedBatch
+            })
+        }else {
+            res.sendResponse({
+                message: "No batch found",
+            }, 404)
+        }
+
+    }catch(err){
+        console.log(err)
+        res.sendResponse({
+            message: "Error occurs while fetching batches data"
+        }, 500)
+    }
+}
+
 
 export const updateBatch = async (req: Request, res: Response) => {
     try{

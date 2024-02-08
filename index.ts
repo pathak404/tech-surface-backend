@@ -5,7 +5,7 @@ import bodyParser from "body-parser"
 import dotEnv from "dotenv"
 
 import router from "./src/routes"
-import { sendResponseMiddleware } from "./src/utils"
+import { authMiddleware, sendResponseMiddleware } from "./src/utils"
 
 
 dotEnv.config();
@@ -14,7 +14,7 @@ const app: Application = express()
 const port: number = 3000 || process.env.PORT
 
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(cors({origin: process.env.FRONTEND_URL}))
 
@@ -27,6 +27,12 @@ mongoose.connection.on("error", (err)=> {
 
 
 app.use(sendResponseMiddleware)
+// authentication
+router.use("/students", authMiddleware)
+router.use("/courses", authMiddleware)
+router.use("/exams", authMiddleware)
+router.use("/admins", authMiddleware)
+
 app.use(router)
 
 

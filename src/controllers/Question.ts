@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 import Question from "../models/Question";
 import mongoose from "mongoose";
 
@@ -56,7 +56,14 @@ export const getQuestion = async (req: Request, res: Response) => {
 export const getQuestions = async (req: Request, res: Response) => {
     try{
         const examId = req.params.examId
-        const savedQuestion = await Question.find({examId}, "questionId question options")
+
+        let savedQuestion;
+        if(req.isAdmin){
+            savedQuestion = await Question.find({examId})
+        }else{
+            savedQuestion = await Question.find({examId}, "questionId question options")
+        }
+
         if(savedQuestion){
             res.sendResponse({
                 message: "Questions data fetched successfully",

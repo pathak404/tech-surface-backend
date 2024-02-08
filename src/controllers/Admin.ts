@@ -51,6 +51,29 @@ export const getAdmin = async (req: Request, res: Response) => {
     }
 }
 
+export const getAdmins = async (req: Request, res: Response) => {
+    try{
+        const savedAdmin = await Admin.find({}, { password: 0 }).sort({ createdAt: -1 })
+        if(savedAdmin){
+            res.sendResponse({
+                message: "Admins data fetched successfully",
+                admin: savedAdmin
+            })
+        }else {
+            res.sendResponse({
+                message: "No admin found",
+            }, 404)
+        }
+
+    }catch(err){
+        console.log(err)
+        res.sendResponse({
+            message: "Error occurs while fetching admins data"
+        }, 500)
+    }
+}
+
+
 
 export const updateAdmin = async (req: Request, res: Response) => {
     try{

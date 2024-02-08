@@ -94,3 +94,6 @@ export type RequestValidation = {
         unique?: boolean;
     };
 }
+
+export type ParsedQs = string | string[] | undefined;
+
