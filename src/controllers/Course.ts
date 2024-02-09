@@ -56,7 +56,7 @@ export const getCourses = async (req: Request, res: Response) => {
         if(savedCourse){
             res.sendResponse({
                 message: "Courses data fetched successfully",
-                course: savedCourse
+                courses: savedCourse
             })
         }else {
             res.sendResponse({

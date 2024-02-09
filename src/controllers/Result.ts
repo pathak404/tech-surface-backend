@@ -39,7 +39,7 @@ export const addResult = async (req: Request, res: Response) => {
         }else{
             res.sendResponse({
                 message: "No questions are available for this examination",
-            }, 402)
+            }, 404)
         }
     }catch(err){
         console.log(err)
@@ -79,7 +79,7 @@ export const getResults = async (req: Request, res: Response) => {
         if(savedResult){
             res.sendResponse({
                 message: "Results data fetched successfully",
-                result: savedResult
+                results: savedResult
             })
         }else {
             res.sendResponse({

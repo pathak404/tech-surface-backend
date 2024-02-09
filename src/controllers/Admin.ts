@@ -53,11 +53,11 @@ export const getAdmin = async (req: Request, res: Response) => {
 
 export const getAdmins = async (req: Request, res: Response) => {
     try{
-        const savedAdmin = await Admin.find({}, { password: 0 }).sort({ createdAt: -1 })
-        if(savedAdmin){
+        const savedAdmins = await Admin.find({}, { password: 0 }).sort({ createdAt: -1 })
+        if(savedAdmins){
             res.sendResponse({
                 message: "Admins data fetched successfully",
-                admin: savedAdmin
+                admins: savedAdmins
             })
         }else {
             res.sendResponse({

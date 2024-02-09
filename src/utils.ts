@@ -99,19 +99,23 @@ const verifyJWT = (token: string) => {
 }
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const authorization = req.get("Authorization") // Bearer type
-    const token = authorization?.split(" ")[1] ?? undefined
-    if(token){
-        const payload = verifyJWT(token)
-        if(payload){
-            req.isAdmin = (payload as JwtPayload)?.isAdmin
-            req.userId = (payload as JwtPayload)?.userId
-            next()
+    try{
+        const authorization = req.get("Authorization") // Bearer type
+        const token = authorization?.split(" ")[1] ?? undefined
+        if(token){
+            const payload = verifyJWT(token)
+            if(payload){
+                req.isAdmin = (payload as JwtPayload)?.isAdmin
+                req.userId = (payload as JwtPayload)?.userId
+                next()
+            }else{
+                res.sendResponse({message: "Authorization token is not valid"}, 401)
+            }
         }else{
-            res.sendResponse({message: "Invalid Authorization Value"}, 403)
+            res.sendResponse({message: "Authorization token not found"}, 401)
         }
-    }else{
-        res.sendResponse({message: "Authorization header not found"}, 403)
+    }catch(err){
+        res.sendResponse({message: "Authorization token verification failed: "+err}, 401)
     }
 }
 

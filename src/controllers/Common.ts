@@ -55,21 +55,21 @@ export const studentLogin = async (req: Request, res: Response) => {
                         token,
                         student,
                         exam
-                    }, 401)
+                    }, 200)
                 }else{
                     res.sendResponse({
                         message: "You are not allowed to give this exam. Check your course and batch"
-                    }, 401)
+                    }, 403)
                 }
             }else{
                 res.sendResponse({
                     message: "Exam code is invalid"
-                }, 401)
+                }, 400)
             }
         }else{
             res.sendResponse({
                 message: "Student not exist"
-            }, 401)
+            }, 404)
         }
     }catch(err){
         console.log(err)

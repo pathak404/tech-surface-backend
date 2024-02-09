@@ -67,7 +67,7 @@ export const getQuestions = async (req: Request, res: Response) => {
         if(savedQuestion){
             res.sendResponse({
                 message: "Questions data fetched successfully",
-                question: savedQuestion
+                questions: savedQuestion
             })
         }else {
             res.sendResponse({

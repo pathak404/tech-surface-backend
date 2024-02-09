@@ -59,7 +59,7 @@ export const getExams = async (req: Request, res: Response) => {
         if(savedExam){
             res.sendResponse({
                 message: "Exams data fetched successfully",
-                exam: savedExam
+                exams: savedExam
             })
         }else {
             res.sendResponse({

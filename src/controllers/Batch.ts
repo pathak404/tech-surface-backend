@@ -55,13 +55,12 @@ export const getBatch = async (req: Request, res: Response) => {
 
 export const getBatches = async (req: Request, res: Response) => {
     try{
-        const batchId = req.params.batchId
         const courseId = req.params.courseId
-        const savedBatch = await Batch.find({batchId, courseId}).sort({ createdAt: -1 })
-        if(savedBatch){
+        const savedBatches = await Batch.find({courseId}).sort({ createdAt: -1 })
+        if(savedBatches){
             res.sendResponse({
                 message: "Batches data fetched successfully",
-                batch: savedBatch
+                batches: savedBatches
             })
         }else {
             res.sendResponse({

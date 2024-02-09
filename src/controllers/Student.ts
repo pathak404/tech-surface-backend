@@ -56,11 +56,19 @@ export const getStudent = async (req: Request, res: Response) => {
 
 export const getStudents = async (req: Request, res: Response) => {
     try{
-        const savedStudent = await Student.find({}).sort({ createdAt: -1 })
-        if(savedStudent){
+        const savedStudents = await Student.find({}, "studentId name phone totalFee courseId batchId -_id").sort({ createdAt: -1 })
+        if(savedStudents){
+            const rearrangedStudents = savedStudents.map(student => ({
+                studentId: student.studentId,
+                name: student.name,
+                phone: student.phone,
+                totalFee: student.totalFee,
+                courseId: student.courseId,
+                batchId: student.batchId
+            }));
             res.sendResponse({
                 message: "Students data fetched successfully",
-                student: savedStudent
+                students: rearrangedStudents
             })
         }else {
             res.sendResponse({
