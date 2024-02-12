@@ -1,8 +1,10 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import Admin from "../models/Admin"
 import { generateJWT } from "../utils"
 import Student from "../models/Student"
 import Exam from "../models/Exam"
+import Course from "../models/Course"
+import Batch from "../models/Batch"
 
 
 export const adminLogin = async (req: Request, res: Response) => {
@@ -78,3 +80,23 @@ export const studentLogin = async (req: Request, res: Response) => {
     }
 }
 
+
+export const getStatistics = async (req: Request, res: Response, next: NextFunction) => {
+    try{
+        const noOfStudents = await Student.countDocuments()
+        const noOfCourses = await Course.countDocuments()
+        const noOfBatches = await Batch.countDocuments()
+        res.sendResponse({
+            message: "Statistics fetched successfully",
+            statistic: [
+                noOfStudents,
+                noOfCourses,
+                noOfBatches,
+            ],
+        })
+    }catch(error){
+        res.sendResponse({
+            message: "Error occurs while fetching statistics"
+        }, 500)
+    }
+}

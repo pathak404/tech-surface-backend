@@ -1,12 +1,12 @@
 import { Response, Router } from "express"
 import { addStudent, getStudent, getStudents, updateStudent } from "./controllers/Student"
 import { addExam, getExam, getExams, updateExam } from "./controllers/Exam"
-import { addQuestion, getQuestion, getQuestions, updateQuestion } from "./controllers/Question"
+import { addQuestion, deleteQuestion, getQuestion, getQuestions, updateQuestion } from "./controllers/Question"
 import { addCourse, getCourse, getCourses, updateCourse } from "./controllers/Course"
 import { addBatch, getBatch, getBatches, updateBatch } from "./controllers/Batch"
 import { addAdmin, getAdmin, getAdmins, updateAdmin } from "./controllers/Admin"
 import { adminLoginMiddleware, isStudentMiddleware, studentLoginMiddleware } from "./middlewares/Common"
-import { adminLogin, studentLogin } from "./controllers/Common"
+import { adminLogin, getStatistics, studentLogin } from "./controllers/Common"
 import { batchMiddleware } from "./middlewares/Batch"
 import { questionMiddleware } from "./middlewares/Question"
 import { addResult, getResult, getResults } from "./controllers/Result"
@@ -38,6 +38,7 @@ router.get("/exams/:examId/questions", examMiddleware, getQuestions)
 router.post("/exams/:examId/questions/new", questionMiddleware, addQuestion)
 router.get("/exams/:examId/questions/:questionId", examMiddleware, questionMiddleware, getQuestion)
 router.put("/exams/:examId/questions/:questionId", questionMiddleware, updateQuestion)
+router.delete("/exams/:examId/questions/:questionId", deleteQuestion)
 // results
 router.get("/exams/:examId/results", examMiddleware, getResults)
 router.get("/exams/:examId/results/:resultId", examMiddleware, resultMiddleware, getResult)
@@ -59,6 +60,8 @@ router.get("/admins", getAdmins)
 router.post("/admins/new", adminMiddleware, addAdmin)
 router.get("/admins/:adminId", adminMiddleware, getAdmin)
 router.put("/admins/:adminId", adminMiddleware, updateAdmin)
+
+router.get("/statistic", getStatistics)
 
 router.post("/admin/login", adminLoginMiddleware, adminLogin)
 

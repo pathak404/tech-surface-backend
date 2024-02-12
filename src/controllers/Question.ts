@@ -1,4 +1,4 @@
-import e, { Request, Response } from "express";
+import e, { NextFunction, Request, Response } from "express";
 import Question from "../models/Question";
 import mongoose from "mongoose";
 
@@ -115,3 +115,21 @@ export const updateQuestion = async (req: Request, res: Response) => {
 }
 
 
+export const deleteQuestion = async (req: Request, res: Response, next: NextFunction) => {
+    const { examId, questionId } = req.params
+    if(!examId || examId.length === 0 || !questionId || questionId.length === 0) {
+        res.sendResponse({message: "Please provide examId and questionId"}, 400)
+    }else{
+        try{
+            const question = await Question.findOne({examId, questionId})
+            if(question){
+                await Question.deleteOne({examId, questionId})
+                res.sendResponse({message: "Question deleted successfully"})
+            }else{
+                res.sendResponse({message: "No question found based on given info"}, 404)
+            }
+        }catch(error: any){
+            res.sendResponse({message: error}, 500)
+        }
+    }
+}
