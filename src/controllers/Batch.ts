@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Batch from "../models/Batch";
 import mongoose from "mongoose";
+import { formatDateTime } from "../utils";
 
 
 export const addBatch = async (req: Request, res: Response) => {
@@ -58,9 +59,17 @@ export const getBatches = async (req: Request, res: Response) => {
         const courseId = req.params.courseId
         const savedBatches = await Batch.find({courseId}).sort({ createdAt: -1 })
         if(savedBatches){
+            const rearrangedBaches = savedBatches.map((batch) => ({
+                batchId: batch.batchId,
+                name: batch.name,
+                description: batch.description,
+                startDate: formatDateTime(batch.startDate),
+                endDate: formatDateTime(batch.endDate),
+                courseId: batch.courseId,
+            }))
             res.sendResponse({
                 message: "Batches data fetched successfully",
-                batches: savedBatches
+                batches: rearrangedBaches
             })
         }else {
             res.sendResponse({

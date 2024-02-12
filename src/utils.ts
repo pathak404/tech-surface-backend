@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { DataType, RequestValidation } from "./types"
-import { Model } from "mongoose"
+import { AnyExpression, Model } from "mongoose"
 import JWT, { JwtPayload } from "jsonwebtoken"
 
 
@@ -99,6 +99,7 @@ const verifyJWT = (token: string) => {
 }
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+    // console.log("called auth")
     try{
         const authorization = req.get("Authorization") // Bearer type
         const token = authorization?.split(" ")[1] ?? undefined
@@ -119,3 +120,20 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     }
 }
 
+export const formatDate = (date: any) => {
+    if (date instanceof Date && !isNaN(new Date(date).getTime())){
+        return date.toISOString().split('T')[0];
+    }
+    return date
+}
+
+export const formatDateTime = (datetime: any) => {
+    const date = new Date(datetime);
+    const year = date.getFullYear().toString().padStart(4, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+}

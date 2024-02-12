@@ -57,17 +57,19 @@ export const getQuestions = async (req: Request, res: Response) => {
     try{
         const examId = req.params.examId
 
-        let savedQuestion;
-        if(req.isAdmin){
-            savedQuestion = await Question.find({examId})
-        }else{
-            savedQuestion = await Question.find({examId}, "questionId question options")
-        }
+        let savedQuestions;
+        savedQuestions = await Question.find({examId})
+        // console.log(req.isAdmin)
+        // if(req.isAdmin){
+        //     savedQuestions = await Question.find({examId})
+        // }else{
+        //     savedQuestions = await Question.find({examId}, "questionId question options")
+        // }
 
-        if(savedQuestion){
+        if(savedQuestions){
             res.sendResponse({
                 message: "Questions data fetched successfully",
-                questions: savedQuestion
+                questions: savedQuestions
             })
         }else {
             res.sendResponse({

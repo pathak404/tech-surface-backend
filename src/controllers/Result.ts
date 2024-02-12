@@ -8,38 +8,44 @@ export const addResult = async (req: Request, res: Response) => {
     try{
         const examId = req.params.examId
         const answers = req.body.answers
-        const questions = await Question.find({examId}, "questionId answer")
+        const studentId = req.body.studentId
 
+        const questions = await Question.find({examId}, "questionId answer")
+        const isSumbitted = await Result.find({studentId})
         let correct = 0;
         let incorrect = 0;
-        if(questions){
-            questions.map((question) => {
-                if(answers[question.questionId] != question.answer){
-                    incorrect++
-                }else{
-                    correct++
-                }
-            })
-
-            const addRes = new Result({
-                _id: new mongoose.Types.ObjectId(), 
-                examId,
-                studentId: req.userId, 
-                answers,
-                correctAnswers: correct,
-                incorrectAnswers: incorrect,
-            })
-
-            const savedResult = await addRes.save()
-            res.sendResponse({
-                message: "Result data added successfully",
-                result: savedResult
-            })
-
+        if(isSumbitted){
+            res.sendResponse({message: "You have already submitted the answers"}, 400)
         }else{
-            res.sendResponse({
-                message: "No questions are available for this examination",
-            }, 404)
+            if(questions){
+                questions.map((question) => {
+                    if(answers[question.questionId] != question.answer){
+                        incorrect++
+                    }else{
+                        correct++
+                    }
+                })
+
+                const addRes = new Result({
+                    _id: new mongoose.Types.ObjectId(), 
+                    examId,
+                    studentId, 
+                    answers,
+                    correctAnswers: correct,
+                    incorrectAnswers: incorrect,
+                })
+
+                const savedResult = await addRes.save()
+                res.sendResponse({
+                    message: "Result data added successfully",
+                    result: savedResult
+                })
+
+            }else{
+                res.sendResponse({
+                    message: "No questions are available for this examination",
+                }, 404)
+            }
         }
     }catch(err){
         console.log(err)

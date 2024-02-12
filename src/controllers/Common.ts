@@ -45,7 +45,6 @@ export const studentLogin = async (req: Request, res: Response) => {
         const {phone, examId} = req.body
         const student = await Student.findOne({phone})
         const exam = await Exam.findOne({examId})
-
         if(student){
             if(exam){
                 if(student.courseId === exam.courseId && student.batchId === exam.batchId){

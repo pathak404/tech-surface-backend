@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Exam from "../models/Exam";
 import mongoose from "mongoose";
+import { formatDateTime } from "../utils";
 
 
 export const addExam = async (req: Request, res: Response) => {
@@ -55,11 +56,19 @@ export const getExam = async (req: Request, res: Response) => {
 
 export const getExams = async (req: Request, res: Response) => {
     try{
-        const savedExam = await Exam.find({}).sort({createdAt: -1})
-        if(savedExam){
+        const savedExams = await Exam.find({}).sort({createdAt: -1})
+        const rearrangedExams = savedExams.map((exam) => ({
+            examId: exam.examId,
+            name: exam.name,
+            courseId: exam.courseId,
+            batchId: exam.batchId,
+            examDate: formatDateTime(exam.examDate),
+        }))
+
+        if(savedExams){
             res.sendResponse({
                 message: "Exams data fetched successfully",
-                exams: savedExam
+                exams: rearrangedExams,
             })
         }else {
             res.sendResponse({

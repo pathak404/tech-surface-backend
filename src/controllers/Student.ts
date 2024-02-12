@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Student from "../models/Student";
 import mongoose from "mongoose";
 import { ParsedQs } from "../types";
+import { formatDate } from "../utils";
 
 export const addStudent = async (req: Request, res: Response) => {
     try{
@@ -56,7 +57,7 @@ export const getStudent = async (req: Request, res: Response) => {
 
 export const getStudents = async (req: Request, res: Response) => {
     try{
-        const savedStudents = await Student.find({}, "studentId name phone totalFee courseId batchId -_id").sort({ createdAt: -1 })
+        const savedStudents = await Student.find({}, "studentId name phone totalFee courseId batchId joiningDate").sort({ createdAt: -1 })
         if(savedStudents){
             const rearrangedStudents = savedStudents.map(student => ({
                 studentId: student.studentId,
@@ -64,7 +65,8 @@ export const getStudents = async (req: Request, res: Response) => {
                 phone: student.phone,
                 totalFee: student.totalFee,
                 courseId: student.courseId,
-                batchId: student.batchId
+                batchId: student.batchId,
+                joiningDate: formatDate(student.joiningDate)
             }));
             res.sendResponse({
                 message: "Students data fetched successfully",

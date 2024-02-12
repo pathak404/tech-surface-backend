@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Course from "../models/Course";
 import mongoose from "mongoose";
+import { formatDate } from "../utils";
 
 
 export const addCourse = async (req: Request, res: Response) => {
@@ -52,11 +53,17 @@ export const getCourse = async (req: Request, res: Response) => {
 
 export const getCourses = async (req: Request, res: Response) => {
     try{
-        const savedCourse = await Course.find({}).sort({createdAt: -1})
-        if(savedCourse){
+        const savedCourses = await Course.find({}).sort({createdAt: -1})
+        if(savedCourses){
+            const rearrangedCourses = savedCourses.map((course) => ({
+                courseId: course.courseId,
+                name: course.name,
+                description: course.description,
+                createdAt: formatDate(course.createdAt)
+            }))
             res.sendResponse({
                 message: "Courses data fetched successfully",
-                courses: savedCourse
+                courses: rearrangedCourses
             })
         }else {
             res.sendResponse({
