@@ -11,7 +11,7 @@ export const addResult = async (req: Request, res: Response) => {
         const studentId = req.body.studentId
 
         const questions = await Question.find({examId}, "questionId answer")
-        const isSumbitted = await Result.find({studentId})
+        const isSumbitted = await Result.find({studentId, examId}).countDocuments()
         let correct = 0;
         let incorrect = 0;
         if(isSumbitted){

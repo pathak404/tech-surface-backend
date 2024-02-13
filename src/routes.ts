@@ -15,6 +15,8 @@ import { resultMiddleware } from "./middlewares/Result"
 import { courseMiddleware } from "./middlewares/Course"
 import { studentMiddleware } from "./middlewares/Student"
 import { adminMiddleware } from "./middlewares/Admin"
+import { paymentMiddleware } from "./middlewares/Payment"
+import { addPayment, getPayments } from "./controllers/Payment"
 
 const router:Router = Router()
 
@@ -62,7 +64,6 @@ router.get("/admins/:adminId", adminMiddleware, getAdmin)
 router.put("/admins/:adminId", adminMiddleware, updateAdmin)
 
 router.get("/statistic", getStatistics)
-
 router.post("/admin/login", adminLoginMiddleware, adminLogin)
 
 // students
@@ -70,6 +71,10 @@ router.get("/students", getStudents)
 router.post("/students/new", studentMiddleware, addStudent)
 router.get("/students/:studentId", studentMiddleware, getStudent)
 router.put("/students/:studentId", studentMiddleware, updateStudent)
+
+// payments
+router.get("/students/:studentId/payments", paymentMiddleware, getPayments)
+router.get("/students/:studentId/payments/new", paymentMiddleware, addPayment)
 
 router.post("/student/login", studentLoginMiddleware, studentLogin)
 router.post("/exams/:examId/results/new", isStudentMiddleware, resultMiddleware, addResult)

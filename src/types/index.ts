@@ -12,6 +12,14 @@ export interface StudentDocument extends Document {
     setStudentId: () => void,
 }
 
+export interface PaymentDocument extends Document {
+    studentId: string,
+    amount: number,
+    method: string,
+    txnId: string,
+    paidAt: Date,
+}
+
 export interface ExamDocument extends Document {
     name: string,
     examId: string,
