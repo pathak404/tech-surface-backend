@@ -74,7 +74,7 @@ router.put("/students/:studentId", studentMiddleware, updateStudent)
 
 // payments
 router.get("/students/:studentId/payments", paymentMiddleware, getPayments)
-router.get("/students/:studentId/payments/new", paymentMiddleware, addPayment)
+router.post("/students/:studentId/payments/new", paymentMiddleware, addPayment)
 
 router.post("/student/login", studentLoginMiddleware, studentLogin)
 router.post("/exams/:examId/results/new", isStudentMiddleware, resultMiddleware, addResult)

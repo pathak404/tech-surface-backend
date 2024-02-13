@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Payment from "../models/Payment";
 import mongoose from "mongoose";
+import { formatDateTime } from "../utils";
 
 
 export const addPayment = async (req: Request, res: Response) => {
@@ -38,7 +39,13 @@ export const getPayments = async (req: Request, res: Response) => {
     try{
         const studentId = req.params.studentId
         const payments = await Payment.find({studentId})
-        res.sendResponse({message: "Payments fetched successfully", payments})
+        const rearrangePayments = payments.map((payment) => ({
+            txnId: payment.txnId,
+            amount: payment.amount,
+            method: payment.method,
+            paidAt: formatDateTime(payment.paidAt),
+        }))
+        res.sendResponse({message: "Payments fetched successfully", payments: rearrangePayments})
     }catch(error){
         console.log(error)
         res.sendResponse({
