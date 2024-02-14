@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import Student from "../models/Student";
 import mongoose from "mongoose";
-import { ParsedQs } from "../types";
 import { formatDate } from "../utils";
 
 export const addStudent = async (req: Request, res: Response) => {
