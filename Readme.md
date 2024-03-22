@@ -27,7 +27,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 To run this project, you will need to add the following environment variables to your .env file
 
-`FRONTEND_URL` - URL of frontend application
+`FRONTEND_URL` - URL of the frontend application
 
 `MONGODB_URL` - Your mongoDB url
 
