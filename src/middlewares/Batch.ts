@@ -25,11 +25,11 @@ const addBatchData : RequestValidation= {
     },
     startDate: {
         type: 'date',
-        required: true,
+        required: false,
     },
     endDate: {
         type: 'date',
-        required: true,
+        required: false,
     },
 }
 

@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import Student from "../models/Student";
 import mongoose from "mongoose";
 import { formatDate } from "../utils";
+import Payment from "../models/Payment";
+import Result from "../models/Result";
 
 export const addStudent = async (req: Request, res: Response) => {
     try{
@@ -111,6 +113,31 @@ export const updateStudent = async (req: Request, res: Response) => {
         console.log(err)
         res.sendResponse({
             message: "Error occurs while updaing student data"
+        }, 500)
+    }
+}
+
+
+
+export const deleteStudent = async (req:Request, res: Response) => {
+    try{
+        const studentId = req.params.studentId;
+        const student = await Student.findOne({studentId});
+        if(student){
+            await Student.deleteOne({studentId});
+            await Payment.deleteMany({studentId});
+            await Result.deleteMany({studentId});
+            res.sendResponse({ message: "Student deleted successfully",}, 200)
+        }else{
+            res.sendResponse({
+                message: "No student found",
+            }, 404)
+        }
+
+    }catch(err){
+        console.log(err);
+        res.sendResponse({
+            message: "Error while deleting student data"
         }, 500)
     }
 }

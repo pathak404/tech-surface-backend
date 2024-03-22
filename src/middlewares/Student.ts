@@ -56,6 +56,9 @@ export const studentMiddleware = async (req: Request, res: Response, next: NextF
         case 'PUT':
             isValidRequest = await verifyRequestData(req, updateStudentData)
             break
+        case 'DELETE':
+            isValidRequest = await verifyRequestData(req, getStudentData)
+            break
         default:
             next()
     }

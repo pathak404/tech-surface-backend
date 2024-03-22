@@ -1,5 +1,5 @@
 import { Response, Router } from "express"
-import { addStudent, getStudent, getStudents, updateStudent } from "./controllers/Student"
+import { addStudent, deleteStudent, getStudent, getStudents, updateStudent } from "./controllers/Student"
 import { addExam, getExam, getExams, updateExam } from "./controllers/Exam"
 import { addQuestion, deleteQuestion, getQuestion, getQuestions, updateQuestion } from "./controllers/Question"
 import { addCourse, getCourse, getCourses, updateCourse } from "./controllers/Course"
@@ -71,6 +71,7 @@ router.get("/students", getStudents)
 router.post("/students/new", studentMiddleware, addStudent)
 router.get("/students/:studentId", studentMiddleware, getStudent)
 router.put("/students/:studentId", studentMiddleware, updateStudent)
+router.delete("/students/:studentId", studentMiddleware, deleteStudent)
 
 // payments
 router.get("/students/:studentId/payments", paymentMiddleware, getPayments)

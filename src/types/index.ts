@@ -18,6 +18,7 @@ export interface PaymentDocument extends Document {
     method: string,
     txnId: string,
     paidAt: Date,
+    description: string,
 }
 
 export interface ExamDocument extends Document {

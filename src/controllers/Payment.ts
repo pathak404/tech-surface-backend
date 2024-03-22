@@ -7,7 +7,7 @@ import { formatDateTime } from "../utils";
 export const addPayment = async (req: Request, res: Response) => {
     try{
         const studentId = req.params.studentId
-        const { amount, txnId, method} = req.body
+        const { amount, txnId, method, description=null, paidAt=null} = req.body
         if(txnId !== "cash"){
             const isPaid = await Payment.find({txnId}).countDocuments()
             if(isPaid){
@@ -22,6 +22,8 @@ export const addPayment = async (req: Request, res: Response) => {
             amount,
             txnId,
             method,
+            description,
+            paidAt,
         })
 
         const paymentData = await payment.save()
@@ -43,6 +45,7 @@ export const getPayments = async (req: Request, res: Response) => {
             txnId: payment.txnId,
             amount: payment.amount,
             method: payment.method,
+            description: payment.description,
             paidAt: formatDateTime(payment.paidAt),
         }))
         res.sendResponse({message: "Payments fetched successfully", payments: rearrangePayments})

@@ -18,6 +18,10 @@ const paymentSchema : Schema<PaymentDocument> = new Schema({
     txnId: {
         type: mongoose.Schema.Types.String,
         required: true,
+    },    
+    description: {
+        type: mongoose.Schema.Types.String,
+        required: false,
     },
     paidAt: {
         type: mongoose.Schema.Types.Date,

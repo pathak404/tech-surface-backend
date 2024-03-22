@@ -7,7 +7,7 @@ import { formatDateTime } from "../utils";
 export const addBatch = async (req: Request, res: Response) => {
     try{
         const courseId = req.params.courseId
-        const {name, description, startDate, endDate} = req.body
+        const {name, description, startDate = null, endDate = null} = req.body
         const batch = new Batch({
             _id: new mongoose.Types.ObjectId(), 
             name, 

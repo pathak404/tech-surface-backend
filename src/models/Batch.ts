@@ -23,11 +23,11 @@ const batchSchema: Schema<BatchDocument> = new Schema({
     },
     startDate: {
         type: mongoose.Schema.Types.Date,
-        required: true,
+        required: false,
     },
     endDate: {
         type: mongoose.Schema.Types.Date,
-        required: true,
+        required: false,
     },
     createdAt: {
         type: mongoose.Schema.Types.Date,
