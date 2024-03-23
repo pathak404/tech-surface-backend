@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { RequestValidation } from "../types"
 import { ReqForworder, verifyRequestData } from "../utils"
-import Payment from "../models/Payment"
 
 const addPaymentData: RequestValidation = {
     studentId: {
@@ -34,6 +33,20 @@ const getPaymentsData: RequestValidation = {
     }
 }
 
+const getPaymentData: RequestValidation = {
+    paymentId: {
+        type: 'string',
+        required: true,
+    },
+    ...getPaymentsData,
+}
+
+
+const updatePaymentData: RequestValidation = {
+    ...getPaymentData,
+    ...addPaymentData
+}
+
 
 export const paymentMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     let isValidRequest;
@@ -42,7 +55,13 @@ export const paymentMiddleware = async (req: Request, res: Response, next: NextF
             isValidRequest = await verifyRequestData(req, getPaymentsData)
             break
         case 'POST':
-            isValidRequest = await verifyRequestData(req, addPaymentData, Payment, next)
+            isValidRequest = await verifyRequestData(req, addPaymentData)
+            break
+        case 'PUT':
+            isValidRequest = await verifyRequestData(req, updatePaymentData)
+            break
+        case 'DELETE':
+            isValidRequest = await verifyRequestData(req, getPaymentData)
             break
         default:
             next()

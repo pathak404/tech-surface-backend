@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import Payment from "../models/Payment";
 import mongoose from "mongoose";
 import { formatDateTime } from "../utils";
@@ -37,11 +37,75 @@ export const addPayment = async (req: Request, res: Response) => {
 }
 
 
+
+export const getPayment = async (req: Request, res: Response) => {
+    try{
+        const _id = req.params.paymentId
+        const payment = await Payment.findById(_id)
+        if(payment){
+            res.sendResponse({message: "Payment fetched successfully", payment})
+        }else{
+            res.sendResponse({message: "No payment found"}, 404)
+        }
+    }catch(error){
+        console.log(error)
+        res.sendResponse({
+            message: "Error occurs while fetching payment"
+        }, 500)
+    }
+}
+
+
+export const deletePayment = async (req: Request, res: Response) => {
+    try{
+        const _id = req.params.paymentId
+        const payment = await Payment.findOneAndDelete({_id})
+        if(payment){
+            res.sendResponse({message: "Payment deleted successfully", payment})
+        }else{
+            res.sendResponse({message: "No payment found"}, 404)
+        }
+    }catch(error){
+        console.log(error)
+        res.sendResponse({
+            message: "Error occurs while deleting payment"
+        }, 500)
+    }
+}
+
+export const updatePayment = async (req: Request, res: Response) => {
+    try{
+        const studentId = req.params.studentId
+        const _id = req.params.paymentId
+        const {amount, txnId, method, description=null, paidAt=null} = req.body
+        const payment = await Payment.findOneAndUpdate({_id, studentId}, {
+            amount,
+            description,
+            paidAt,
+            txnId,
+            method,
+        })
+        if(payment){
+            res.sendResponse({message: "Payment deleted successfully", payment})
+        }else{
+            res.sendResponse({message: "No payment found"}, 404)
+        }
+    }catch(error){
+        console.log(error)
+        res.sendResponse({
+            message: "Error occurs while updating payment"
+        }, 500)
+    }
+}
+
+
+
 export const getPayments = async (req: Request, res: Response) => {
     try{
         const studentId = req.params.studentId
         const payments = await Payment.find({studentId})
         const rearrangePayments = payments.map((payment) => ({
+            _id: payment._id,
             txnId: payment.txnId,
             amount: payment.amount,
             method: payment.method,

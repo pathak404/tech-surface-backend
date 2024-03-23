@@ -16,7 +16,7 @@ import { courseMiddleware } from "./middlewares/Course"
 import { studentMiddleware } from "./middlewares/Student"
 import { adminMiddleware } from "./middlewares/Admin"
 import { paymentMiddleware } from "./middlewares/Payment"
-import { addPayment, getPayments } from "./controllers/Payment"
+import { addPayment, deletePayment, getPayments, updatePayment } from "./controllers/Payment"
 
 const router:Router = Router()
 
@@ -76,6 +76,9 @@ router.delete("/students/:studentId", studentMiddleware, deleteStudent)
 // payments
 router.get("/students/:studentId/payments", paymentMiddleware, getPayments)
 router.post("/students/:studentId/payments/new", paymentMiddleware, addPayment)
+router.put("/students/:studentId/payments/:paymentId", paymentMiddleware, updatePayment)
+router.delete("/students/:studentId/payments/:paymentId", paymentMiddleware, deletePayment)
+// router.get("/students/:studentId/payments/:paymentId", paymentMiddleware, getPayment)
 
 router.post("/student/login", studentLoginMiddleware, studentLogin)
 router.post("/exams/:examId/results/new", isStudentMiddleware, resultMiddleware, addResult)
