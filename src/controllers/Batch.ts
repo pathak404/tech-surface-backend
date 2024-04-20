@@ -88,8 +88,7 @@ export const getBatches = async (req: Request, res: Response) => {
 
 export const updateBatch = async (req: Request, res: Response) => {
     try{
-        const courseId = req.params.courseId
-        const {name, description, startDate, endDate} = req.body
+        const {name, description, startDate, endDate, courseId} = req.body
         const batch = {
             name, 
             description,
